@@ -1,0 +1,6 @@
+.env
+node_modules/
+dist/
+.vscode/
+.idea/
+notes.txt
