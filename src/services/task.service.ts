@@ -30,10 +30,6 @@ export class TaskService {
     return response.json();
   }
 
-  async authenticate(): Promise<ClickUpUser> {
-    return this.request<ClickUpUser>("/user");
-  }
-
   async getTask(taskId: string): Promise<ClickUpTask> {
     return this.request<ClickUpTask>(
       `/task/${taskId}?custom_task_ids=false&team_id=${this.workspaceId}&include_subtasks=true&include_markdown_description=true`

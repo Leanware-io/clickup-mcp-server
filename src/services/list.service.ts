@@ -25,10 +25,6 @@ export class ListService {
     return response.json();
   }
 
-  async authenticate(): Promise<ClickUpUser> {
-    return this.request<ClickUpUser>("/user");
-  }
-
   async getLists(folderId: string) {
     return this.request<{ lists: any[] }>(`/folder/${folderId}/list`);
   }

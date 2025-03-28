@@ -25,10 +25,6 @@ export class SpaceService {
     return response.json();
   }
 
-  async authenticate(): Promise<ClickUpUser> {
-    return this.request<ClickUpUser>("/user");
-  }
-
   async getSpaces() {
     return this.request<{ spaces: any[] }>(`/team/${this.workspaceId}/space`);
   }

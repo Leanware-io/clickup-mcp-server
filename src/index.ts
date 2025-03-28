@@ -2,7 +2,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
-  authenticateTool,
   getTaskByCustomIdTool,
   getTaskTool,
   createTaskTool,
@@ -15,7 +14,6 @@ import { getListsTool, createListTool } from "./controllers/list.controller";
 
 const tools = [
   // Task tools
-  authenticateTool,
   getTaskByCustomIdTool,
   getTaskTool,
   createTaskTool,

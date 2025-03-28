@@ -25,10 +25,6 @@ export class FolderService {
     return response.json();
   }
 
-  async authenticate(): Promise<ClickUpUser> {
-    return this.request<ClickUpUser>("/user");
-  }
-
   async getFolders(spaceId: string) {
     return this.request<{ folders: any[] }>(`/space/${spaceId}/folder`);
   }

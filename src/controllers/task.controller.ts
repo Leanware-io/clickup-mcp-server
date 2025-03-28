@@ -16,18 +16,6 @@ if (!apiToken || !workspaceId) {
 
 const taskService = new TaskService(apiToken, workspaceId);
 
-const authenticateTool = defineTool((z) => ({
-  name: "clickup_authenticate",
-  description: "Authenticate with ClickUp API using an API token",
-  inputSchema: {},
-  handler: async (input) => {
-    const response = await taskService.authenticate();
-    return {
-      content: [{ type: "text", text: JSON.stringify(response) }],
-    };
-  },
-}));
-
 const getTaskTool = defineTool((z) => ({
   name: "clickup_get_task",
   description: "Get a task by its ID",
@@ -197,7 +185,6 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
 }));
 
 export {
-  authenticateTool,
   getTaskByCustomIdTool,
   getTaskTool,
   createTaskTool,
