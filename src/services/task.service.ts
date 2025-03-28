@@ -3,6 +3,7 @@ import {
   ClickUpUser,
   CreateTaskParams,
   UpdateTaskParams,
+  GetListTasksParams,
 } from "../models/types";
 
 const BASE_URL = "https://api.clickup.com/api/v2";
@@ -71,6 +72,28 @@ export class TaskService {
         method: "PUT",
         body: JSON.stringify(params),
       }
+    );
+  }
+
+  async getListTasks(listId: string, params: GetListTasksParams = {}) {
+    const queryParams = new URLSearchParams();
+
+    // Add optional query parameters if they exist
+    if (params.archived !== undefined)
+      queryParams.append("archived", params.archived.toString());
+    if (params.page !== undefined)
+      queryParams.append("page", params.page.toString());
+    if (params.subtasks !== undefined)
+      queryParams.append("subtasks", params.subtasks.toString());
+    if (params.include_closed !== undefined)
+      queryParams.append("include_closed", params.include_closed.toString());
+
+    const queryString = queryParams.toString()
+      ? `?${queryParams.toString()}`
+      : "";
+
+    return this.request<{ tasks: ClickUpTask[] }>(
+      `/list/${listId}/task${queryString}`
     );
   }
 }

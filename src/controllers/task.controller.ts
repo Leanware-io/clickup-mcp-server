@@ -1,7 +1,11 @@
 import dottenv from "dotenv";
 import { defineTool } from "../utils/defineTool";
 import TaskService from "../services/task.service";
-import { CreateTaskParams, UpdateTaskParams } from "../models/types";
+import {
+  CreateTaskParams,
+  UpdateTaskParams,
+  GetListTasksParams,
+} from "../models/types";
 
 dottenv.config();
 const apiToken = process.env.CLICKUP_API_TOKEN;
@@ -140,27 +144,14 @@ const updateTaskTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
-    assignees: z
+    assignees_add: z
       .array(z.number())
       .optional()
-      .describe("Array of user IDs to assign to the task"),
-    custom_fields: z
-      .array(
-        z.object({
-          id: z.string().describe("Custom field ID"),
-          value: z
-            .union([
-              z.string(),
-              z.number(),
-              z.boolean(),
-              z.array(z.unknown()),
-              z.record(z.unknown()),
-            ])
-            .describe("Value for the custom field"),
-        })
-      )
+      .describe("Array of user IDs to add to the task"),
+    assignees_rem: z
+      .array(z.number())
       .optional()
-      .describe("Custom fields to update on the task"),
+      .describe("Array of user IDs to remove from the task"),
   },
   handler: async (input): Promise<any> => {
     const { task_id, ...updateData } = input;
@@ -171,8 +162,8 @@ const updateTaskTool = defineTool((z) => ({
       due_date: updateData.due_date,
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
-      assignees: updateData.assignees,
-      custom_fields: updateData.custom_fields,
+      assignees_add: updateData.assignees_add,
+      assignees_rem: updateData.assignees_rem,
     };
 
     const response = await taskService.updateTask(task_id, taskParams);
@@ -208,27 +199,14 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
-    assignees: z
+    assignees_add: z
       .array(z.number())
       .optional()
-      .describe("Array of user IDs to assign to the task"),
-    custom_fields: z
-      .array(
-        z.object({
-          id: z.string().describe("Custom field ID"),
-          value: z
-            .union([
-              z.string(),
-              z.number(),
-              z.boolean(),
-              z.array(z.unknown()),
-              z.record(z.unknown()),
-            ])
-            .describe("Value for the custom field"),
-        })
-      )
+      .describe("Array of user IDs to add to the task"),
+    assignees_rem: z
+      .array(z.number())
       .optional()
-      .describe("Custom fields to update on the task"),
+      .describe("Array of user IDs to remove from the task"),
   },
   handler: async (input): Promise<any> => {
     const { custom_id, ...updateData } = input;
@@ -239,13 +217,35 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       due_date: updateData.due_date,
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
-      assignees: updateData.assignees,
-      custom_fields: updateData.custom_fields,
+      assignees_add: updateData.assignees_add,
+      assignees_rem: updateData.assignees_rem,
     };
 
     const response = await taskService.updateTaskByCustomId(
       custom_id,
       taskParams
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(response) }],
+    };
+  },
+}));
+
+const getListTasksTool = defineTool((z) => ({
+  name: "get_list_tasks",
+  description: "Get tasks from a ClickUp list with optional filtering",
+  inputSchema: {
+    list_id: z.string().describe("ClickUp list ID"),
+    archived: z.boolean().optional().describe("Include archived tasks"),
+    page: z.number().optional().describe("Page number for pagination"),
+    subtasks: z.boolean().optional().describe("Include subtasks"),
+    include_closed: z.boolean().optional().describe("Include closed tasks"),
+  },
+  handler: async (input) => {
+    const { list_id, ...params } = input;
+    const response = await taskService.getListTasks(
+      list_id,
+      params as GetListTasksParams
     );
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],
@@ -259,4 +259,5 @@ export {
   createTaskTool,
   updateTaskTool,
   updateTaskByCustomIdTool,
+  getListTasksTool,
 };
