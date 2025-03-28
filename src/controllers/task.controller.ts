@@ -144,14 +144,19 @@ const updateTaskTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
-    assignees_add: z
-      .array(z.number())
+    assignees: z
+      .object({
+        add: z
+          .array(z.number())
+          .optional()
+          .describe("Array of user IDs to add to the task"),
+        rem: z
+          .array(z.number())
+          .optional()
+          .describe("Array of user IDs to remove from the task"),
+      })
       .optional()
-      .describe("Array of user IDs to add to the task"),
-    assignees_rem: z
-      .array(z.number())
-      .optional()
-      .describe("Array of user IDs to remove from the task"),
+      .describe("User IDs to add or remove from the task"),
   },
   handler: async (input): Promise<any> => {
     const { task_id, ...updateData } = input;
@@ -162,8 +167,7 @@ const updateTaskTool = defineTool((z) => ({
       due_date: updateData.due_date,
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
-      assignees_add: updateData.assignees_add,
-      assignees_rem: updateData.assignees_rem,
+      assignees: updateData.assignees,
     };
 
     const response = await taskService.updateTask(task_id, taskParams);
@@ -199,14 +203,19 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
-    assignees_add: z
-      .array(z.number())
+    assignees: z
+      .object({
+        add: z
+          .array(z.number())
+          .optional()
+          .describe("Array of user IDs to add to the task"),
+        rem: z
+          .array(z.number())
+          .optional()
+          .describe("Array of user IDs to remove from the task"),
+      })
       .optional()
-      .describe("Array of user IDs to add to the task"),
-    assignees_rem: z
-      .array(z.number())
-      .optional()
-      .describe("Array of user IDs to remove from the task"),
+      .describe("User IDs to add or remove from the task"),
   },
   handler: async (input): Promise<any> => {
     const { custom_id, ...updateData } = input;
@@ -217,8 +226,7 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       due_date: updateData.due_date,
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
-      assignees_add: updateData.assignees_add,
-      assignees_rem: updateData.assignees_rem,
+      assignees: updateData.assignees,
     };
 
     const response = await taskService.updateTaskByCustomId(

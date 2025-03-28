@@ -40,6 +40,8 @@ export interface UpdateTaskParams {
   due_date?: number; // Unix timestamp in milliseconds
   tags?: string[]; // Array of tag names
   time_estimate?: number; // Time estimate in milliseconds
-  assignees_add?: number[]; // Array of user IDs to add to the task
-  assignees_rem?: number[]; // Array of user IDs to remove from the task
+  assignees?: {
+    add?: number[]; // Array of user IDs to add to the task
+    rem?: number[]; // Array of user IDs to remove from the task
+  };
 }
