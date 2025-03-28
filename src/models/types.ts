@@ -1,8 +1,13 @@
 import z from "zod";
-import { ClickUpTaskSchema, ClickUpUserSchema } from "./schema";
+import {
+  ClickUpTaskSchema,
+  ClickUpUserSchema,
+  ClickUpCustomFieldSchema,
+} from "./schema";
 
 export type ClickUpUser = z.infer<typeof ClickUpUserSchema>;
 export type ClickUpTask = z.infer<typeof ClickUpTaskSchema>;
+export type ClickUpCustomField = z.infer<typeof ClickUpCustomFieldSchema>;
 
 export interface CreateTaskParams {
   name: string;

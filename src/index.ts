@@ -11,6 +11,10 @@ import {
 import { getSpacesTool } from "./controllers/space.controller";
 import { getFoldersTool } from "./controllers/folder.controller";
 import { getListsTool, createListTool } from "./controllers/list.controller";
+import {
+  getListCustomFieldsTool,
+  setCustomFieldValueTool,
+} from "./controllers/custom-field.controller";
 
 const tools = [
   // Task tools
@@ -29,6 +33,10 @@ const tools = [
   // List tools
   getListsTool,
   createListTool,
+
+  // Custom Field tools
+  getListCustomFieldsTool,
+  setCustomFieldValueTool,
 ];
 
 async function main() {

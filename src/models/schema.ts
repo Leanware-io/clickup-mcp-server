@@ -1,5 +1,24 @@
 import { z } from "zod";
 
+export const ClickUpCustomFieldSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: z.string(),
+  type_config: z.unknown(),
+  date_created: z.string(),
+  hide_from_guests: z.boolean(),
+  required: z.boolean(),
+  value: z
+    .union([
+      z.string(),
+      z.number(),
+      z.null(),
+      z.array(z.unknown()),
+      z.record(z.unknown()),
+    ])
+    .optional(),
+});
+
 export const ClickUpUserSchema = z.object({
   id: z.number(),
   username: z.string(),
