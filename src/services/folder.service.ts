@@ -26,7 +26,19 @@ export class FolderService {
   }
 
   async getFolders(spaceId: string) {
-    return this.request<{ folders: any[] }>(`/space/${spaceId}/folder`);
+    const response = await this.request<{ folders: any[] }>(
+      `/space/${spaceId}/folder`
+    );
+
+    // Remove the "lists" attribute from each folder to reduce payload size
+    if (response.folders && Array.isArray(response.folders)) {
+      response.folders = response.folders.map((folder) => {
+        const { lists, ...folderWithoutLists } = folder;
+        return folderWithoutLists;
+      });
+    }
+
+    return response;
   }
 }
 
