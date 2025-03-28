@@ -3,11 +3,15 @@ import {
   ClickUpTaskSchema,
   ClickUpUserSchema,
   ClickUpCustomFieldSchema,
+  ClickUpDocSchema,
+  ClickUpDocPageSchema,
 } from "./schema";
 
 export type ClickUpUser = z.infer<typeof ClickUpUserSchema>;
 export type ClickUpTask = z.infer<typeof ClickUpTaskSchema>;
 export type ClickUpCustomField = z.infer<typeof ClickUpCustomFieldSchema>;
+export type ClickUpDoc = z.infer<typeof ClickUpDocSchema>;
+export type ClickUpDocPage = z.infer<typeof ClickUpDocPageSchema>;
 
 export interface GetListTasksParams {
   archived?: boolean;
@@ -46,4 +50,30 @@ export interface UpdateTaskParams {
     rem?: number[]; // Array of user IDs to remove from the task
   };
   parent?: string; // Parent task ID to move this task as a subtask
+}
+
+export interface SearchDocsParams {
+  parent_type: string; // Type of parent (e.g., "workspace", "folder", "list")
+  parent_id: string; // ID of the parent
+}
+
+export interface CreateDocParams {
+  title: string;
+  parent: {
+    id: string;
+    type: number; // 4 for Space, 5 for Folder, 6 for List, 7 for Everything, 12 for Workspace
+  };
+  visibility?: string; // "PRIVATE" by default
+  create_page?: boolean; // false by default
+}
+
+export interface CreatePageParams {
+  title: string;
+  parent_id: string;
+  content?: string;
+}
+
+export interface EditPageParams {
+  title?: string;
+  content?: string;
 }

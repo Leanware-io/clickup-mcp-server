@@ -1,5 +1,71 @@
 import { z } from "zod";
 
+export const ClickUpDocSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  date_created: z.string(),
+  date_updated: z.string(),
+  folder: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      hidden: z.boolean(),
+      access: z.boolean(),
+    })
+    .optional(),
+  list: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      access: z.boolean(),
+    })
+    .optional(),
+  project: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      hidden: z.boolean(),
+      access: z.boolean(),
+    })
+    .optional(),
+  space: z.object({
+    id: z.string(),
+  }),
+  user: z.object({
+    id: z.number(),
+    username: z.string(),
+    email: z.string(),
+    color: z.string(),
+  }),
+  shared: z.boolean(),
+  members: z.array(
+    z.object({
+      user: z.object({
+        id: z.number(),
+        username: z.string(),
+        email: z.string(),
+        color: z.string(),
+      }),
+      permission_level: z.string(),
+    })
+  ),
+  permission_level: z.string(),
+  parent: z.object({
+    id: z.string(),
+    type: z.number(),
+  }),
+});
+
+export const ClickUpDocPageSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  date_created: z.string(),
+  date_updated: z.string(),
+  parent: z.string().nullable(),
+  content: z.string().optional(),
+  children: z.array(z.string()).optional(),
+});
+
 export const ClickUpCustomFieldSchema = z.object({
   id: z.string(),
   name: z.string(),

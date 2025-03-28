@@ -8,6 +8,14 @@ import {
   updateTaskTool,
   updateTaskByCustomIdTool,
 } from "./controllers/task.controller";
+import {
+  searchDocsTool,
+  createDocTool,
+  getDocPagesTool,
+  getPageTool,
+  createPageTool,
+  editPageTool,
+} from "./controllers/docs.controller";
 import { getSpacesTool } from "./controllers/space.controller";
 import { getFoldersTool } from "./controllers/folder.controller";
 import { getListsTool, createListTool } from "./controllers/list.controller";
@@ -43,6 +51,14 @@ const tools = [
 
   // Assignee tools
   getListAssigneesTool,
+
+  // Docs tools
+  searchDocsTool,
+  createDocTool,
+  getDocPagesTool,
+  getPageTool,
+  createPageTool,
+  editPageTool,
 ];
 
 async function main() {
