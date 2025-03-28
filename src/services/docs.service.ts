@@ -7,7 +7,7 @@ import {
   SearchDocsParams,
 } from "../models/types";
 
-const BASE_URL = "https://api.clickup.com/api/v2";
+const BASE_URL = "https://api.clickup.com/api/v3/workspaces";
 
 export class DocsService {
   private readonly headers: { Authorization: string; "Content-Type": string };
@@ -35,31 +35,35 @@ export class DocsService {
   async searchDocs(params: SearchDocsParams): Promise<{ docs: ClickUpDoc[] }> {
     const { parent_type, parent_id } = params;
     return this.request<{ docs: ClickUpDoc[] }>(
-      `/team/${this.workspaceId}/doc?parent_type=${parent_type}&parent_id=${parent_id}`
+      `/${this.workspaceId}/docs?parent_type=${parent_type}&parent_id=${parent_id}`
     );
   }
 
   async createDoc(params: CreateDocParams): Promise<ClickUpDoc> {
     const docData = {
-      title: params.title,
+      name: params.name,
       parent: params.parent,
       visibility: params.visibility || "PRIVATE",
       create_page:
         params.create_page !== undefined ? params.create_page : false,
     };
 
-    return this.request<ClickUpDoc>(`/team/${this.workspaceId}/doc`, {
+    return this.request<ClickUpDoc>(`/${this.workspaceId}/docs`, {
       method: "POST",
       body: JSON.stringify(docData),
     });
   }
 
   async getDocPages(docId: string): Promise<{ pages: ClickUpDocPage[] }> {
-    return this.request<{ pages: ClickUpDocPage[] }>(`/doc/${docId}/page`);
+    return this.request<{ pages: ClickUpDocPage[] }>(
+      `/${this.workspaceId}/docs/${docId}/pageListing`
+    );
   }
 
-  async getPage(pageId: string): Promise<ClickUpDocPage> {
-    return this.request<ClickUpDocPage>(`/page/${pageId}`);
+  async getPage(docId: string, pageId: string): Promise<ClickUpDocPage> {
+    return this.request<ClickUpDocPage>(
+      `/${this.workspaceId}/docs/${docId}/pages/${pageId}`
+    );
   }
 
   async createPage(params: CreatePageParams): Promise<ClickUpDocPage> {

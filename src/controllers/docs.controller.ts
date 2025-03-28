@@ -46,7 +46,7 @@ const createDocTool = defineTool((z) => ({
   name: "clickup_create_doc",
   description: "Create a new doc in ClickUp",
   inputSchema: {
-    title: z.string().describe("Doc title"),
+    name: z.string().describe("The name of the new Doc"),
     parent: z
       .object({
         id: z.string().describe("Parent ID"),
@@ -68,7 +68,7 @@ const createDocTool = defineTool((z) => ({
   },
   handler: async (input) => {
     const docParams: CreateDocParams = {
-      title: input.title,
+      name: input.name,
       parent: input.parent,
       visibility: input.visibility,
       create_page: input.create_page,
@@ -98,10 +98,11 @@ const getPageTool = defineTool((z) => ({
   name: "clickup_get_page",
   description: "Get a page from a ClickUp doc",
   inputSchema: {
+    doc_id: z.string().describe("ClickUp doc ID"),
     page_id: z.string().describe("ClickUp page ID"),
   },
   handler: async (input) => {
-    const response = await docsService.getPage(input.page_id);
+    const response = await docsService.getPage(input.doc_id, input.page_id);
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],
     };

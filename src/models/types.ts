@@ -58,7 +58,7 @@ export interface SearchDocsParams {
 }
 
 export interface CreateDocParams {
-  title: string;
+  name: string;
   parent: {
     id: string;
     type: number; // 4 for Space, 5 for Folder, 6 for List, 7 for Everything, 12 for Workspace
