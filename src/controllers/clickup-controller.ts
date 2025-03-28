@@ -1,7 +1,7 @@
 import dottenv from "dotenv";
 import { defineTool } from "../utils/defineTool";
 import ClickUpService from "../services/clickup-service";
-import { CreateTaskParams } from "../models/types";
+import { CreateTaskParams, UpdateTaskParams } from "../models/types";
 
 dottenv.config();
 const apiToken = process.env.CLICKUP_API_TOKEN;
@@ -103,4 +103,104 @@ const createTaskTool = defineTool((z) => ({
   },
 }));
 
-export { authenticateTool, getTaskByCustomIdTool, getTaskTool, createTaskTool };
+const updateTaskTool = defineTool((z) => ({
+  name: "clickup_update_task",
+  description: "Update a task by its ID",
+  inputSchema: {
+    task_id: z.string().describe("ClickUp task ID"),
+    name: z.string().optional().describe("Task name"),
+    markdown_description: z
+      .string()
+      .optional()
+      .describe("Task description in markdown format"),
+    priority: z
+      .number()
+      .optional()
+      .describe("Task priority (1-4): 1=Urgent, 2=High, 3=Normal, 4=Low"),
+    due_date: z
+      .number()
+      .optional()
+      .describe("Due date as Unix timestamp in milliseconds"),
+    tags: z
+      .array(z.string())
+      .optional()
+      .describe("Array of tag names to add to the task"),
+    time_estimate: z
+      .number()
+      .optional()
+      .describe("Time estimate in milliseconds"),
+  },
+  handler: async (input): Promise<any> => {
+    const { task_id, ...updateData } = input;
+    const taskParams: UpdateTaskParams = {
+      name: updateData.name,
+      markdown_description: updateData.markdown_description,
+      priority: updateData.priority,
+      due_date: updateData.due_date,
+      tags: updateData.tags,
+      time_estimate: updateData.time_estimate,
+    };
+
+    const response = await clickUpService.updateTask(task_id, taskParams);
+    return {
+      content: [{ type: "text", text: JSON.stringify(response) }],
+    };
+  },
+}));
+
+const updateTaskByCustomIdTool = defineTool((z) => ({
+  name: "clickup_update_task_by_custom_id",
+  description: "Update a task by its custom ID",
+  inputSchema: {
+    custom_id: z.string().describe("ClickUp custom task ID"),
+    name: z.string().optional().describe("Task name"),
+    markdown_description: z
+      .string()
+      .optional()
+      .describe("Task description in markdown format"),
+    priority: z
+      .number()
+      .optional()
+      .describe("Task priority (1-4): 1=Urgent, 2=High, 3=Normal, 4=Low"),
+    due_date: z
+      .number()
+      .optional()
+      .describe("Due date as Unix timestamp in milliseconds"),
+    tags: z
+      .array(z.string())
+      .optional()
+      .describe("Array of tag names to add to the task"),
+    time_estimate: z
+      .number()
+      .optional()
+      .describe("Time estimate in milliseconds"),
+  },
+  handler: async (input): Promise<any> => {
+    const { custom_id, ...updateData } = input;
+    const taskParams: UpdateTaskParams = {
+      name: updateData.name,
+      markdown_description: updateData.markdown_description,
+      priority: updateData.priority,
+      due_date: updateData.due_date,
+      tags: updateData.tags,
+      time_estimate: updateData.time_estimate,
+    };
+
+    const response = await clickUpService.updateTaskByCustomId(
+      custom_id,
+      taskParams
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(response) }],
+    };
+  },
+}));
+
+export {
+  authenticateTool,
+  getTaskByCustomIdTool,
+  getTaskTool,
+  createTaskTool,
+  updateTaskTool,
+  updateTaskByCustomIdTool,
+};

@@ -14,3 +14,13 @@ export interface CreateTaskParams {
   tags?: string[]; // Array of tag names
   time_estimate?: number; // Time estimate in milliseconds
 }
+
+export interface UpdateTaskParams {
+  name?: string;
+  description?: string;
+  markdown_description?: string; // Task description in markdown format
+  priority?: number; // 1 (Urgent), 2 (High), 3 (Normal), 4 (Low)
+  due_date?: number; // Unix timestamp in milliseconds
+  tags?: string[]; // Array of tag names
+  time_estimate?: number; // Time estimate in milliseconds
+}

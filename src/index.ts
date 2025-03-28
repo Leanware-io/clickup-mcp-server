@@ -6,6 +6,8 @@ import {
   getTaskByCustomIdTool,
   getTaskTool,
   createTaskTool,
+  updateTaskTool,
+  updateTaskByCustomIdTool,
 } from "./controllers/clickup-controller";
 
 const tools = [
@@ -13,6 +15,8 @@ const tools = [
   getTaskByCustomIdTool,
   getTaskTool,
   createTaskTool,
+  updateTaskTool,
+  updateTaskByCustomIdTool,
 ];
 
 async function main() {

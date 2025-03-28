@@ -1,4 +1,9 @@
-import { ClickUpTask, ClickUpUser, CreateTaskParams } from "../models/types";
+import {
+  ClickUpTask,
+  ClickUpUser,
+  CreateTaskParams,
+  UpdateTaskParams,
+} from "../models/types";
 
 const BASE_URL = "https://api.clickup.com/api/v2";
 
@@ -48,6 +53,29 @@ export class ClickUpService {
       method: "POST",
       body: JSON.stringify(taskData),
     });
+  }
+
+  async updateTask(
+    taskId: string,
+    params: UpdateTaskParams
+  ): Promise<ClickUpTask> {
+    return this.request<ClickUpTask>(`/task/${taskId}`, {
+      method: "PUT",
+      body: JSON.stringify(params),
+    });
+  }
+
+  async updateTaskByCustomId(
+    customId: string,
+    params: UpdateTaskParams
+  ): Promise<ClickUpTask> {
+    return this.request<ClickUpTask>(
+      `/task/${customId}?custom_task_ids=true&team_id=${this.workspaceId}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(params),
+      }
+    );
   }
 }
 
