@@ -8,15 +8,29 @@ import {
   createTaskTool,
   updateTaskTool,
   updateTaskByCustomIdTool,
-} from "./controllers/clickup-controller";
+} from "./controllers/task.controller";
+import { getSpacesTool } from "./controllers/space.controller";
+import { getFoldersTool } from "./controllers/folder.controller";
+import { getListsTool, createListTool } from "./controllers/list.controller";
 
 const tools = [
+  // Task tools
   authenticateTool,
   getTaskByCustomIdTool,
   getTaskTool,
   createTaskTool,
   updateTaskTool,
   updateTaskByCustomIdTool,
+
+  // Space tools
+  getSpacesTool,
+
+  // Folder tools
+  getFoldersTool,
+
+  // List tools
+  getListsTool,
+  createListTool,
 ];
 
 async function main() {

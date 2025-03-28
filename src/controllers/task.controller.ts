@@ -1,6 +1,6 @@
 import dottenv from "dotenv";
 import { defineTool } from "../utils/defineTool";
-import ClickUpService from "../services/clickup-service";
+import TaskService from "../services/task.service";
 import { CreateTaskParams, UpdateTaskParams } from "../models/types";
 
 dottenv.config();
@@ -14,14 +14,14 @@ if (!apiToken || !workspaceId) {
   process.exit(1);
 }
 
-const clickUpService = new ClickUpService(apiToken, workspaceId);
+const taskService = new TaskService(apiToken, workspaceId);
 
 const authenticateTool = defineTool((z) => ({
   name: "clickup_authenticate",
   description: "Authenticate with ClickUp API using an API token",
   inputSchema: {},
   handler: async (input) => {
-    const response = await clickUpService.authenticate();
+    const response = await taskService.authenticate();
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],
     };
@@ -36,7 +36,7 @@ const getTaskTool = defineTool((z) => ({
   },
   handler: async (input) => {
     const { task_id } = input;
-    const response = await clickUpService.getTask(task_id);
+    const response = await taskService.getTask(task_id);
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],
     };
@@ -51,7 +51,7 @@ const getTaskByCustomIdTool = defineTool((z) => ({
   },
   handler: async (input) => {
     const { custom_id } = input;
-    const response = await clickUpService.getTaskByCustomId(custom_id);
+    const response = await taskService.getTaskByCustomId(custom_id);
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],
     };
@@ -96,7 +96,7 @@ const createTaskTool = defineTool((z) => ({
       time_estimate: input.time_estimate,
     };
 
-    const response = await clickUpService.createTask(taskParams);
+    const response = await taskService.createTask(taskParams);
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],
     };
@@ -141,7 +141,7 @@ const updateTaskTool = defineTool((z) => ({
       time_estimate: updateData.time_estimate,
     };
 
-    const response = await clickUpService.updateTask(task_id, taskParams);
+    const response = await taskService.updateTask(task_id, taskParams);
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],
     };
@@ -186,7 +186,7 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       time_estimate: updateData.time_estimate,
     };
 
-    const response = await clickUpService.updateTaskByCustomId(
+    const response = await taskService.updateTaskByCustomId(
       custom_id,
       taskParams
     );

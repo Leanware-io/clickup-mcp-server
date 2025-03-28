@@ -7,7 +7,7 @@ import {
 
 const BASE_URL = "https://api.clickup.com/api/v2";
 
-export class ClickUpService {
+export class TaskService {
   private readonly headers: { Authorization: string; "Content-Type": string };
   private readonly workspaceId: string;
 
@@ -79,4 +79,4 @@ export class ClickUpService {
   }
 }
 
-export default ClickUpService;
+export default TaskService;
