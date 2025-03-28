@@ -6,36 +6,40 @@ A Model Context Protocol server that provides seamless integration with ClickUp,
 
 This MCP server provides the following tools for interacting with ClickUp:
 
-### `clickup_create_task`
+### Task Management
 
-Creates a new task in your ClickUp workspace.
+- **`clickup_create_task`**: Creates a new task in your ClickUp workspace
+- **`clickup_get_task`**: Retrieves detailed information about a specific task using its ID
+- **`clickup_get_task_by_custom_id`**: Retrieves task information using a custom ID
+- **`clickup_update_task`**: Updates an existing task by its ID
+- **`clickup_update_task_by_custom_id`**: Updates an existing task by its custom ID
+- **`get_list_tasks`**: Gets all tasks from a list with optional filtering
 
-- **Required inputs**:
-  - `name` (string): Task name
-  - `list_id` (string): ClickUp list ID where the task will be created
-- **Optional inputs**:
-  - `markdown_description` (string): Task description in markdown format
-  - `priority` (number): Task priority (1=Urgent, 2=High, 3=Normal, 4=Low)
-  - `due_date` (number): Due date as Unix timestamp in milliseconds
-  - `tags` (array of strings): Tag names to add to the task
-  - `time_estimate` (number): Time estimate in milliseconds
-- **Returns**: Details of the newly created task
+### Document Management
 
-### `clickup_get_task`
+- **`clickup_search_docs`**: Searches for docs in a specific parent
+- **`clickup_create_doc`**: Creates a new doc in ClickUp
+- **`clickup_get_doc_pages`**: Gets all pages from a ClickUp doc
+- **`clickup_get_page`**: Gets a specific page from a ClickUp doc
+- **`clickup_create_page`**: Creates a new page in a ClickUp doc
+- **`clickup_edit_page`**: Edits an existing page in a ClickUp doc
 
-Retrieves detailed information about a specific task using its ID.
+### Custom Fields
 
-- **Required inputs**:
-  - `task_id` (string): The ClickUp task ID
-- **Returns**: Complete task details including description, status, assignees, and metadata
+- **`clickup_get_list_custom_fields`**: Gets all accessible custom fields for a list
+- **`clickup_set_custom_field_value`**: Sets a value for a custom field on a task
+- **`clickup_set_custom_field_value_by_custom_id`**: Sets a custom field value using the task's custom ID
 
-### `clickup_get_task_by_custom_id`
+### Assignees
 
-Retrieves task information using a custom ID.
+- **`get_list_assignees`**: Gets all members (potential assignees) of a list
 
-- **Required inputs**:
-  - `custom_id` (string): The custom ID of the task
-- **Returns**: Complete task details including description, status, assignees, and metadata
+### Workspace Structure
+
+- **`get_spaces`**: Gets all spaces in the workspace
+- **`get_folders`**: Gets all folders in a space
+- **`get_lists`**: Gets all lists in a folder
+- **`create_list`**: Creates a new list in a folder
 
 ## Build
 
