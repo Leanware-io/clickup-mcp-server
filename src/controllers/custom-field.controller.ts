@@ -61,4 +61,40 @@ const setCustomFieldValueTool = defineTool((z) => ({
   },
 }));
 
-export { getListCustomFieldsTool, setCustomFieldValueTool };
+const setCustomFieldValueByCustomIdTool = defineTool((z) => ({
+  name: "clickup_set_custom_field_value_by_custom_id",
+  description:
+    "Set a value for a custom field on a task using the task's custom ID",
+  inputSchema: {
+    custom_id: z.string().describe("ClickUp custom task ID"),
+    custom_field_id: z.string().describe("Custom field ID"),
+    value: z
+      .union([
+        z.string(),
+        z.number(),
+        z.boolean(),
+        z.array(z.unknown()),
+        z.record(z.unknown()),
+      ])
+      .describe(
+        "Value to set for the custom field. Type depends on the custom field type."
+      ),
+  },
+  handler: async (input) => {
+    const { custom_id, custom_field_id, value } = input;
+    const response = await customFieldService.setCustomFieldValueByCustomId(
+      custom_id,
+      custom_field_id,
+      value
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(response) }],
+    };
+  },
+}));
+
+export {
+  getListCustomFieldsTool,
+  setCustomFieldValueTool,
+  setCustomFieldValueByCustomIdTool,
+};

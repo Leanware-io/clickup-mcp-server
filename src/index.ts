@@ -14,6 +14,7 @@ import { getListsTool, createListTool } from "./controllers/list.controller";
 import {
   getListCustomFieldsTool,
   setCustomFieldValueTool,
+  setCustomFieldValueByCustomIdTool,
 } from "./controllers/custom-field.controller";
 
 const tools = [
@@ -37,6 +38,7 @@ const tools = [
   // Custom Field tools
   getListCustomFieldsTool,
   setCustomFieldValueTool,
+  setCustomFieldValueByCustomIdTool,
 ];
 
 async function main() {

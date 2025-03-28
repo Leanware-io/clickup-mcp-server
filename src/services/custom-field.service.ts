@@ -46,6 +46,20 @@ export class CustomFieldService {
       }
     );
   }
+
+  async setCustomFieldValueByCustomId(
+    customId: string,
+    customFieldId: string,
+    value: any
+  ): Promise<{ field: ClickUpCustomField }> {
+    return this.request<{ field: ClickUpCustomField }>(
+      `/task/${customId}/field/${customFieldId}?custom_task_ids=true&team_id=${this.workspaceId}`,
+      {
+        method: "POST",
+        body: JSON.stringify({ value }),
+      }
+    );
+  }
 }
 
 export default CustomFieldService;

@@ -72,6 +72,23 @@ const createTaskTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
+    custom_fields: z
+      .array(
+        z.object({
+          id: z.string().describe("Custom field ID"),
+          value: z
+            .union([
+              z.string(),
+              z.number(),
+              z.boolean(),
+              z.array(z.unknown()),
+              z.record(z.unknown()),
+            ])
+            .describe("Value for the custom field"),
+        })
+      )
+      .optional()
+      .describe("Custom fields to set on task creation"),
   },
   handler: async (input): Promise<any> => {
     const taskParams: CreateTaskParams = {
@@ -82,6 +99,7 @@ const createTaskTool = defineTool((z) => ({
       due_date: input.due_date,
       tags: input.tags,
       time_estimate: input.time_estimate,
+      custom_fields: input.custom_fields,
     };
 
     const response = await taskService.createTask(taskParams);
@@ -117,6 +135,23 @@ const updateTaskTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
+    custom_fields: z
+      .array(
+        z.object({
+          id: z.string().describe("Custom field ID"),
+          value: z
+            .union([
+              z.string(),
+              z.number(),
+              z.boolean(),
+              z.array(z.unknown()),
+              z.record(z.unknown()),
+            ])
+            .describe("Value for the custom field"),
+        })
+      )
+      .optional()
+      .describe("Custom fields to update on the task"),
   },
   handler: async (input): Promise<any> => {
     const { task_id, ...updateData } = input;
@@ -127,6 +162,7 @@ const updateTaskTool = defineTool((z) => ({
       due_date: updateData.due_date,
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
+      custom_fields: updateData.custom_fields,
     };
 
     const response = await taskService.updateTask(task_id, taskParams);
@@ -162,6 +198,23 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
+    custom_fields: z
+      .array(
+        z.object({
+          id: z.string().describe("Custom field ID"),
+          value: z
+            .union([
+              z.string(),
+              z.number(),
+              z.boolean(),
+              z.array(z.unknown()),
+              z.record(z.unknown()),
+            ])
+            .describe("Value for the custom field"),
+        })
+      )
+      .optional()
+      .describe("Custom fields to update on the task"),
   },
   handler: async (input): Promise<any> => {
     const { custom_id, ...updateData } = input;
@@ -172,6 +225,7 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       due_date: updateData.due_date,
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
+      custom_fields: updateData.custom_fields,
     };
 
     const response = await taskService.updateTaskByCustomId(
