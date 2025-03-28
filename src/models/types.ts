@@ -68,12 +68,18 @@ export interface CreateDocParams {
 }
 
 export interface CreatePageParams {
-  title: string;
-  parent_id: string;
-  content?: string;
+  docId: string;
+  name: string;
+  parent_page_id?: string;
+  sub_title?: string;
+  content: string;
 }
 
 export interface EditPageParams {
-  title?: string;
+  docId: string;
+  pageId: string;
+  name?: string;
+  sub_title?: string;
   content?: string;
+  content_edit_mode?: string;
 }

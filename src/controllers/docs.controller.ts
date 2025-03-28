@@ -27,7 +27,7 @@ const searchDocsTool = defineTool((z) => ({
   inputSchema: {
     parent_type: z
       .string()
-      .describe("Type of parent (workspace, folder, list)"),
+      .describe("Type of parent (SPACE, FOLDER, LIST, EVERYTHING, WORKSPACE)"),
     parent_id: z.string().describe("ID of the parent"),
   },
   handler: async (input) => {
@@ -60,11 +60,11 @@ const createDocTool = defineTool((z) => ({
     visibility: z
       .string()
       .optional()
-      .describe("Doc visibility (PRIVATE by default)"),
+      .describe("Doc visibility (PUBLIC or PRIVATE), PRIVATE by default"),
     create_page: z
       .boolean()
       .optional()
-      .describe("Whether to create a page (false by default)"),
+      .describe("Whether to create a initial page (false by default)"),
   },
   handler: async (input) => {
     const docParams: CreateDocParams = {
@@ -113,14 +113,21 @@ const createPageTool = defineTool((z) => ({
   name: "clickup_create_page",
   description: "Create a new page in a ClickUp doc",
   inputSchema: {
-    parent_id: z.string().describe("Parent doc ID"),
-    title: z.string().describe("Page title"),
-    content: z.string().optional().describe("Page content"),
+    doc_id: z.string().describe("ClickUp doc ID"),
+    name: z.string().describe("Page name"),
+    parent_page_id: z
+      .string()
+      .optional()
+      .describe("Parent page ID (null for root page)"),
+    sub_title: z.string().optional().describe("Page subtitle"),
+    content: z.string().describe("Page content in markdown format"),
   },
   handler: async (input) => {
     const pageParams: CreatePageParams = {
-      parent_id: input.parent_id,
-      title: input.title,
+      docId: input.doc_id,
+      name: input.name,
+      parent_page_id: input.parent_page_id,
+      sub_title: input.sub_title,
       content: input.content,
     };
     const response = await docsService.createPage(pageParams);
@@ -134,17 +141,28 @@ const editPageTool = defineTool((z) => ({
   name: "clickup_edit_page",
   description: "Edit a page in a ClickUp doc",
   inputSchema: {
+    doc_id: z.string().describe("ClickUp doc ID"),
     page_id: z.string().describe("ClickUp page ID"),
-    title: z.string().optional().describe("Page title"),
-    content: z.string().optional().describe("Page content"),
+    name: z.string().optional().describe("Page name"),
+    sub_title: z.string().optional().describe("Page subtitle"),
+    content: z.string().optional().describe("Page content in markdown format"),
+    content_edit_mode: z
+      .string()
+      .optional()
+      .describe(
+        "Content edit mode (replace, append, prepend), default is replace"
+      ),
   },
   handler: async (input) => {
-    const { page_id, ...updateData } = input;
     const pageParams: EditPageParams = {
-      title: updateData.title,
-      content: updateData.content,
+      docId: input.doc_id,
+      pageId: input.page_id,
+      name: input.name,
+      sub_title: input.sub_title,
+      content: input.content,
+      content_edit_mode: input.content_edit_mode,
     };
-    const response = await docsService.editPage(page_id, pageParams);
+    const response = await docsService.editPage(pageParams);
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],
     };

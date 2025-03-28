@@ -67,26 +67,42 @@ export class DocsService {
   }
 
   async createPage(params: CreatePageParams): Promise<ClickUpDocPage> {
-    const { parent_id, title, content } = params;
+    const { docId, name, parent_page_id, sub_title, content } = params;
     const pageData = {
-      title,
+      name,
+      parent_page_id: parent_page_id || null,
+      sub_title: sub_title || null,
       content,
+      content_format: "text/md",
     };
 
-    return this.request<ClickUpDocPage>(`/doc/${parent_id}/page`, {
-      method: "POST",
-      body: JSON.stringify(pageData),
-    });
+    return this.request<ClickUpDocPage>(
+      `/${this.workspaceId}/docs/${docId}/pages`,
+      {
+        method: "POST",
+        body: JSON.stringify(pageData),
+      }
+    );
   }
 
-  async editPage(
-    pageId: string,
-    params: EditPageParams
-  ): Promise<ClickUpDocPage> {
-    return this.request<ClickUpDocPage>(`/page/${pageId}`, {
-      method: "PUT",
-      body: JSON.stringify(params),
-    });
+  async editPage(params: EditPageParams): Promise<ClickUpDocPage> {
+    const { docId, pageId, name, sub_title, content, content_edit_mode } =
+      params;
+    const pageData = {
+      name,
+      sub_title,
+      content,
+      content_edit_mode: content_edit_mode || "replace",
+      content_format: "text/md",
+    };
+
+    return this.request<ClickUpDocPage>(
+      `/${this.workspaceId}/docs/${docId}/pages/${pageId}`,
+      {
+        method: "PUT",
+        body: JSON.stringify(pageData),
+      }
+    );
   }
 }
 
