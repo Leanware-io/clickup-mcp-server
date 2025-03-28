@@ -18,6 +18,7 @@ export interface CreateTaskParams {
   due_date?: number; // Unix timestamp in milliseconds
   tags?: string[]; // Array of tag names
   time_estimate?: number; // Time estimate in milliseconds
+  assignees?: number[]; // Array of user IDs to assign to the task
   custom_fields?: Array<{
     id: string;
     value: string | number | boolean | any[] | Record<string, any>;
@@ -32,6 +33,7 @@ export interface UpdateTaskParams {
   due_date?: number; // Unix timestamp in milliseconds
   tags?: string[]; // Array of tag names
   time_estimate?: number; // Time estimate in milliseconds
+  assignees?: number[]; // Array of user IDs to assign to the task
   custom_fields?: Array<{
     id: string;
     value: string | number | boolean | any[] | Record<string, any>;

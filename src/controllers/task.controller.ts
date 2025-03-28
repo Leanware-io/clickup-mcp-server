@@ -72,6 +72,10 @@ const createTaskTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
+    assignees: z
+      .array(z.number())
+      .optional()
+      .describe("Array of user IDs to assign to the task"),
     custom_fields: z
       .array(
         z.object({
@@ -99,6 +103,7 @@ const createTaskTool = defineTool((z) => ({
       due_date: input.due_date,
       tags: input.tags,
       time_estimate: input.time_estimate,
+      assignees: input.assignees,
       custom_fields: input.custom_fields,
     };
 
@@ -135,6 +140,10 @@ const updateTaskTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
+    assignees: z
+      .array(z.number())
+      .optional()
+      .describe("Array of user IDs to assign to the task"),
     custom_fields: z
       .array(
         z.object({
@@ -162,6 +171,7 @@ const updateTaskTool = defineTool((z) => ({
       due_date: updateData.due_date,
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
+      assignees: updateData.assignees,
       custom_fields: updateData.custom_fields,
     };
 
@@ -198,6 +208,10 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       .number()
       .optional()
       .describe("Time estimate in milliseconds"),
+    assignees: z
+      .array(z.number())
+      .optional()
+      .describe("Array of user IDs to assign to the task"),
     custom_fields: z
       .array(
         z.object({
@@ -225,6 +239,7 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       due_date: updateData.due_date,
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
+      assignees: updateData.assignees,
       custom_fields: updateData.custom_fields,
     };
 

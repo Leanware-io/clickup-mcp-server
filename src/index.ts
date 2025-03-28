@@ -16,6 +16,7 @@ import {
   setCustomFieldValueTool,
   setCustomFieldValueByCustomIdTool,
 } from "./controllers/custom-field.controller";
+import { getListAssigneesTool } from "./controllers/assignee.controller";
 
 const tools = [
   // Task tools
@@ -39,6 +40,9 @@ const tools = [
   getListCustomFieldsTool,
   setCustomFieldValueTool,
   setCustomFieldValueByCustomIdTool,
+
+  // Assignee tools
+  getListAssigneesTool,
 ];
 
 async function main() {
