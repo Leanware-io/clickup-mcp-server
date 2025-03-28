@@ -2,17 +2,63 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
-  authenticateTool,
   getTaskByCustomIdTool,
   getTaskTool,
   createTaskTool,
-} from "./controllers/clickup-controller";
+  updateTaskTool,
+  updateTaskByCustomIdTool,
+} from "./controllers/task.controller";
+import {
+  searchDocsTool,
+  createDocTool,
+  getDocPagesTool,
+  getPageTool,
+  createPageTool,
+  editPageTool,
+} from "./controllers/docs.controller";
+import { getSpacesTool } from "./controllers/space.controller";
+import { getFoldersTool } from "./controllers/folder.controller";
+import { getListsTool, createListTool } from "./controllers/list.controller";
+import {
+  getListCustomFieldsTool,
+  setCustomFieldValueTool,
+  setCustomFieldValueByCustomIdTool,
+} from "./controllers/custom-field.controller";
+import { getListAssigneesTool } from "./controllers/assignee.controller";
 
 const tools = [
-  authenticateTool,
+  // Task tools
   getTaskByCustomIdTool,
   getTaskTool,
   createTaskTool,
+  updateTaskTool,
+  updateTaskByCustomIdTool,
+
+  // Space tools
+  getSpacesTool,
+
+  // Folder tools
+  getFoldersTool,
+
+  // List tools
+  getListsTool,
+  createListTool,
+
+  // Custom Field tools
+  getListCustomFieldsTool,
+  setCustomFieldValueTool,
+  setCustomFieldValueByCustomIdTool,
+
+  // Assignee tools
+  getListAssigneesTool,
+
+  // Docs tools
+  searchDocsTool,
+  createDocTool,
+  getDocPagesTool,
+  getPageTool,
+  createPageTool,
+  editPageTool,
 ];
 
 async function main() {
