@@ -36,41 +36,11 @@ const createListTool = defineTool((z) => ({
   inputSchema: {
     folder_id: z.string().describe("ClickUp folder ID"),
     name: z.string().describe("List name"),
-    content: z.string().optional().describe("List content/description"),
-    due_date: z
-      .number()
-      .optional()
-      .describe("Due date as Unix timestamp in milliseconds"),
-    due_date_time: z
-      .boolean()
-      .optional()
-      .describe("Whether the due date includes time"),
-    priority: z
-      .number()
-      .optional()
-      .describe("Priority (1-4): 1=Urgent, 2=High, 3=Normal, 4=Low"),
-    assignee: z.string().optional().describe("User ID to assign the list to"),
-    status: z.string().optional().describe("Status of the list"),
   },
   handler: async (input) => {
-    const {
-      folder_id,
-      name,
-      content,
-      due_date,
-      due_date_time,
-      priority,
-      assignee,
-      status,
-    } = input;
+    const { folder_id, name } = input;
     const response = await listService.createList(folder_id, {
       name,
-      content,
-      due_date,
-      due_date_time,
-      priority,
-      assignee,
-      status,
     });
     return {
       content: [{ type: "text", text: JSON.stringify(response) }],

@@ -33,12 +33,6 @@ export class ListService {
     folderId: string,
     params: {
       name: string;
-      content?: string;
-      due_date?: number;
-      due_date_time?: boolean;
-      priority?: number;
-      assignee?: string;
-      status?: string;
     }
   ) {
     return this.request(`/folder/${folderId}/list`, {
