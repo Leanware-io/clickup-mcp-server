@@ -30,6 +30,7 @@ export interface CreateTaskParams {
     id: string;
     value: string | number | boolean | any[] | Record<string, any>;
   }>; // Custom fields to set on task creation
+  parent?: string; // Parent task ID to create this task as a subtask
 }
 
 export interface UpdateTaskParams {
@@ -44,4 +45,5 @@ export interface UpdateTaskParams {
     add?: number[]; // Array of user IDs to add to the task
     rem?: number[]; // Array of user IDs to remove from the task
   };
+  parent?: string; // Parent task ID to move this task as a subtask
 }

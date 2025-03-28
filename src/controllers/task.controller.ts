@@ -97,6 +97,10 @@ const createTaskTool = defineTool((z) => ({
       )
       .optional()
       .describe("Custom fields to set on task creation"),
+    parent: z
+      .string()
+      .optional()
+      .describe("Parent task ID to create this task as a subtask"),
   },
   handler: async (input): Promise<any> => {
     const taskParams: CreateTaskParams = {
@@ -109,6 +113,7 @@ const createTaskTool = defineTool((z) => ({
       time_estimate: input.time_estimate,
       assignees: input.assignees,
       custom_fields: input.custom_fields,
+      parent: input.parent,
     };
 
     const response = await taskService.createTask(taskParams);
@@ -157,6 +162,10 @@ const updateTaskTool = defineTool((z) => ({
       })
       .optional()
       .describe("User IDs to add or remove from the task"),
+    parent: z
+      .string()
+      .optional()
+      .describe("Parent task ID to move this task as a subtask"),
   },
   handler: async (input): Promise<any> => {
     const { task_id, ...updateData } = input;
@@ -168,6 +177,7 @@ const updateTaskTool = defineTool((z) => ({
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
       assignees: updateData.assignees,
+      parent: updateData.parent,
     };
 
     const response = await taskService.updateTask(task_id, taskParams);
@@ -216,6 +226,10 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       })
       .optional()
       .describe("User IDs to add or remove from the task"),
+    parent: z
+      .string()
+      .optional()
+      .describe("Parent task ID to move this task as a subtask"),
   },
   handler: async (input): Promise<any> => {
     const { custom_id, ...updateData } = input;
@@ -227,6 +241,7 @@ const updateTaskByCustomIdTool = defineTool((z) => ({
       tags: updateData.tags,
       time_estimate: updateData.time_estimate,
       assignees: updateData.assignees,
+      parent: updateData.parent,
     };
 
     const response = await taskService.updateTaskByCustomId(
