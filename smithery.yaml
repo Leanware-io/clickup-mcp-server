@@ -1,0 +1,24 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - clickupApiToken
+      - clickupWorkspaceId
+    properties:
+      clickupApiToken:
+        type: string
+        description: ClickUp API token
+      clickupWorkspaceId:
+        type: string
+        description: ClickUp workspace ID
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'node', args: ['dist/index.js'], env: { CLICKUP_API_TOKEN: config.clickupApiToken, CLICKUP_WORKSPACE_ID: config.clickupWorkspaceId } })
+  exampleConfig:
+    clickupApiToken: sk_test_1234567890abcdef
+    clickupWorkspaceId: "123456789"
